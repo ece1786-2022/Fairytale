@@ -7,7 +7,9 @@ def english_level_type_A(filename = "A2.txt", output_filename = "processed_words
         for i in range(0, len(lines)):
             line = lines[i]        
             words.extend(line.strip().split(" "))
-    words = set([w.lower().replace("(",'').replace(")",'').replace("]",'').replace("[",'') for w in words if len(w)>1])
+    words = set([w.lower().replace("(",'').replace(")",'')
+                 .replace("]",'').replace("[",'').replace(",","").
+                 replace(";","").replace(":","").replace(".","") for w in words if len(w)>1])
     return words
 # pd.DataFrame.from_dict(data=output, orient='index').to_csv(output_filename, header=False)
 
@@ -19,7 +21,9 @@ def english_level_type_B(filename = "B2.txt", output_filename = "processed_words
             line = lines[i].strip()
             if line.count('/')>1:
                 words.extend([line.strip().split(" ")[0]])
-    words = set([w.lower().replace("(",'').replace(")",'').replace("]",'').replace("[",'') for w in words if len(w)>1])
+    words = set([w.lower().replace("(",'').replace(")",'')
+                 .replace("]",'').replace("[",'').replace(",","").
+                 replace(";","").replace(":","").replace(".","") for w in words if len(w)>1])
     return words
 
 A1 = english_level_type_A("A1.txt", output_filename = "processed_words_level/A1.txt")

@@ -28,6 +28,7 @@ unwilling
 brick
 bad-tempered
 residential
+can/can't/could
 dealer
 nicely
 endless
@@ -52,6 +53,7 @@ congratulate
 claim
 column
 prejudice
+first/second/third/final
 beam
 slight
 lyrics
@@ -330,7 +332,6 @@ database
 underestimate
 major
 feature
-bored/frightened/scared,
 sensation
 scent
 tide
@@ -376,6 +377,7 @@ orchestral
 authority
 outskirts
 risk
+good/successful/well
 wipe
 straightforward
 pharmacist
@@ -431,6 +433,7 @@ enthusiastic
 council
 penalty
 formal
+bored/frightened/scared
 sob
 improved
 impatient
@@ -538,7 +541,6 @@ wrist
 clumsy
 lap
 accidental
-good/successful/well,
 arrogant
 identical
 standard
@@ -638,6 +640,7 @@ decorative
 absorb
 distribute
 threat
+http//wwwtoegr/
 irritating
 mechanical
 mental
@@ -686,6 +689,7 @@ moonlight
 frustration
 softness
 basics
+first/second/third
 element
 host
 tool
@@ -736,7 +740,6 @@ expense
 logical
 eyesight
 swollen
-first/second/third/final,
 yell
 effectively
 concerned
@@ -1024,7 +1027,6 @@ injury
 discourage
 phase
 soaking
-http://www.toe.gr/
 protection
 marathon
 mysterious
@@ -1126,7 +1128,6 @@ origin
 strain
 demolish
 thrilling
-first/second/third,
 unchanged
 attached
 manual
@@ -1281,8 +1282,8 @@ bow
 gaze
 democratic
 spiritual
-capture
 tighten
+capture
 ripe
 rearrange
 ambassador
@@ -1429,7 +1430,6 @@ oval
 chief
 instant
 clause
-can/can't/could,
 automatically
 agriculture
 zip
@@ -1438,7 +1438,6 @@ misty
 transparent
 revolution
 delight
-bored/scared/worried,
 tease
 solo
 greedy
@@ -1494,7 +1493,6 @@ inventor
 lastly
 yawn
 eighty
-twenty
 prawn
 terrace
 controversial
@@ -1576,6 +1574,7 @@ convert
 chemical
 abandon
 relief
+bored/scared/worried
 alternative
 unusually
 firmly
