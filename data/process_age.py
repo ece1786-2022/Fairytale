@@ -45,7 +45,7 @@ def calculate_grade(text):
             
 
 
-def text_age_is_for_kids(text='', levels_address = 'english_level/processed_words_level/'):
+def is_for_kids(text='', levels_address = 'english_level/processed_words_level/'):
     # returns 1 for kids, 0 for adults
     A = []
     B = []
@@ -106,18 +106,18 @@ def text_age_is_for_kids(text='', levels_address = 'english_level/processed_word
 # # text = '''An American or British person might be looking their client in the eye to show that they are paying full attention to what is being said, but if that client is from Japan or Korea, they might find the direct eye contact awkward or even disrespectful. In parts of South America and Africa, prolonged eye contact could also be seen as challenging authority. In the Middle East, eye contact across genders is considered inappropriate, although eye contact within a gender could signify honesty and truthfulness.'''
 # # text = '''If we want to know where our capability for complex language came from, we need to look at how our brains are different from other animals. This relates to more than just brain size; it is important what other things our brains can do and when and why they evolved that way. And for this there are very few physical clues; artefacts left by our ancestors don't tell us what speech they were capable of making. One thing we can see in the remains of early humans, however, is the development of the mouth, throat and tongue. By about 100,000 years ago, humans had evolved the ability to create complex sounds. Before that, evolutionary biologists can only guess whether or not early humans communicated using more basic sounds.'''
 
-# print(text_age_is_for_kids(text)) # 1 is for kids, 0 is for adults
+# print(is_for_kids(text)) # 1 is for kids, 0 is for adults
 
 
 
-filename = "data\processed_data\story_2.tsv"
-data = pd.read_csv(filename, header=None, names=['id', 'text'], sep='\t')
+# filename = "data\processed_data\story_2.tsv"
+# data = pd.read_csv(filename, header=None, names=['id', 'text'], sep='\t')
 
-ages = []
-for text in data['text']:
-    ages.append(round(calculate_grade(text)))
+# ages = []
+# for text in data['text']:
+#     ages.append(round(calculate_grade(text)))
 
-print(ages)
+# print(ages)
 
 # print(text)
 # print(calculate_grade(text))
