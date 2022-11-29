@@ -4,11 +4,10 @@ import random
 from data import process_age
 from data import process_genre
 
-# model_name = "pranavpsv/genre-story-generator-v2"
+model_name = "pranavpsv/genre-story-generator-v2"
 # model_name = "pranavpsv/gpt2-genre-story-generator"
 # model_name = "openai-gpt"
 # model_name = "pranavpsv/gpt2-story-gen"
-model_name = 'gpt2'
 
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(model_name)
@@ -17,7 +16,6 @@ begin = ['A long time ago and far,', 'Once upon a time,']
 skeletons = ["","","","","But", "After a while,", "However,", "Then,", "So,", "In fact,", "Moreover", "In contrast,", "Consequently,", "Because of", "Furthermore"]
 end = ['Finally, ']
 
-# genre = ''
 genre = "<action>"
 # genre = "<sci_fi>"
 # genre = "<horror>"
