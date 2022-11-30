@@ -2,6 +2,10 @@ import csv
 import pandas as pd
 import process_age
 import process_genre
+import json
+from transformers import GPT2Tokenizer
+
+tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
 
 def story_type_A(filename = "data\story_7.txt", output_filename = "data\processed_data/story_7.tsv", start_line = 0):
     with open(filename, "r", encoding="utf8") as f:
@@ -126,7 +130,22 @@ def process_scifi():
     for each in output:
         s.write(each + ", ")
 
-process_scifi()
+def create_json():
+    filename = "genre_words/processed/sci-fi.txt"
+    output = {}
+    with open(filename, 'r', encoding='utf8') as f:
+        lines = f.readlines()
+        for i, line in enumerate(lines):
+            line = line.strip().split(',')
+            for word in line:
+                output[tokenizer(word)['input_ids'][0]] = 1.5
+    jsonString = json.dumps(output)
+    jsonFile = open("genre_words/processed/sci-fi.json", "w")
+    jsonFile.write(jsonString)
+    jsonFile.close()
+
+create_json()
+# process_scifi()
 # process_summary()
 
 # process_childrenstories()
