@@ -44,17 +44,22 @@ def story_type_B(filename = "story_7.txt", output_filename = "processed_data/sto
 # story_type_A(filename = "story_2.txt", output_filename = "processed_data/story_2.csv")
 # story_type_B(filename = "story_2.txt", output_filename = "processed_data/story_2.csv")
 
+
 def add_genre_to_text_data(filename = "processed_data\story_2.tsv"):
     data = pd.read_csv(filename, header=None, names=['id', 'text'], sep='\t')
     genres = []
     ages = []
     is_for_kids = []
+    
     for text in data['text']:
         genre = process_genre.get_genre(text)
         genres.append(genre)
         ages.append(round(process_age.calculate_grade(text)))
         is_for_kids.append(process_age.is_for_kids(text))
-        
+    genre_set = set(genres)
+    for genre in genre_set:
+        c = genres.count(genre)
+        print("{}: {}".format(genre, c))
     se = pd.Series(genres)
     data['genre'] = se.values
     se = pd.Series(ages)
