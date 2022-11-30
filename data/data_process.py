@@ -69,8 +69,15 @@ def process_childrenstories():
     output_filename="data\processed_data/childrenstories.tsv"
     numrows = 72
 
+    count = {}
     df = pd.read_table('childrenstories.tsv', nrows=numrows)
     for i in range (numrows):
+        
+        if df['genre'][i] in count.keys():
+            count[df['genre'][i]]+=1
+        elif df['genre'][i] not in count.keys():
+            count[df['genre'][i]] = 1
+        
         #strip whitespace
         text = df['text'][i].strip()
         df['text'][i] = text
@@ -78,9 +85,47 @@ def process_childrenstories():
         #add age
         df['age'] = round(process_age.calculate_grade(text))
 
+    print(count)
     df.to_csv("processed_data/childrenstories.tsv", sep='\t')
 
-add_genre_to_text_data("processed_data\story_3.tsv")
+def process_summary():
+    filename="raw_data/children_summaries.txt" 
+    count = {}
+
+    df = pd.read_table(filename, sep='\t')
+    for i in range(len(df['cats'])):
+        sentence = df['desc'][i]
+        words = sentence.strip().replace("\n", '').split(" ")
+        for word in words:
+            if word not in count.keys():
+                count[word] = 1
+            elif word in count.keys():
+                count[word] += 1
+    
+    sortedkeys = sorted(count.items(), key=lambda x:x[1], reverse=True)
+    for i in range(200, 400):
+        print(sortedkeys[i])
+
+def process_scifi():
+    filename = "genre_words/sci-fi.txt"
+    output = []
+    with open(filename, "r", encoding="utf8") as f:
+        lines = f.readlines()        
+        for i, line in enumerate(lines):
+            line = line.strip().lower().split(' ')
+            for word in line:
+                if word not in output:
+                    output.append(word)
+    
+    s = open("genre_words/processed/sci-fi.txt", "w")
+    for each in output:
+        s.write(each + ", ")
+
+process_scifi()
+# process_summary()
+
+# process_childrenstories()
+# add_genre_to_text_data("processed_data\story_3.tsv")
 
 
 
