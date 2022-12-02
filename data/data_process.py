@@ -115,8 +115,8 @@ def process_summary():
     for i in range(200, 400):
         print(sortedkeys[i])
 
-def process_scifi():
-    filename = "genre_words/sci-fi.txt"
+def process_genre_words(genre):
+    filename = "genre_words/" + genre + ".txt"
     output = []
     with open(filename, "r", encoding="utf8") as f:
         lines = f.readlines()        
@@ -126,12 +126,12 @@ def process_scifi():
                 if word not in output:
                     output.append(word)
     
-    s = open("genre_words/processed/sci-fi.txt", "w")
+    s = open("genre_words/processed/" + genre + ".txt", "w")
     for each in output:
         s.write(each + ", ")
 
-def create_json():
-    filename = "genre_words/processed/sci-fi.txt"
+def create_json(genre):
+    filename = "genre_words/processed/" + genre + ".txt"
     output = {}
     with open(filename, 'r', encoding='utf8') as f:
         lines = f.readlines()
@@ -139,15 +139,16 @@ def create_json():
             line = line.strip().split(',')
             for word in line:
                 for token in tokenizer(word)['input_ids']:
-                    output[token] = 1.5
+                    output[token] = 1.35
 
     jsonString = json.dumps(output)
-    jsonFile = open("genre_words/processed/sci-fi.json", "w")
+    jsonFile = open("genre_words/processed/" + genre + ".json", "w")
     jsonFile.write(jsonString)
     jsonFile.close()
 
-# process_scifi()
-create_json()
+genre_type = "realfic"
+process_genre_words(genre_type)
+create_json(genre_type)
 # process_summary()
 
 # process_childrenstories()

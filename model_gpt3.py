@@ -13,13 +13,16 @@ ai.api_key = API_KEY
 tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
 
 
-values = "cleverness, friendship, teamwork"
+values = "friendship, determination"
 story = ""
 parts = ['beginning', 'middle', 'end']
+
+realfic_starters = ['There is a', 'I knew that something very special was about to happen', 'Today', 'Dear Diary']
 starters = ['A long time ago and far,', 'Once upon a time,', 'There is a', 'I knew that something very special was about to happen', 'In a faraway land', 'There was once a']
+
 fillers = ['Suddenly', "But", "After a while,", "However,", "Then,", "So,", "In fact,", "Moreover", "In contrast,", "Consequently,", "Because of", "Furthermore"]
 closers = ['The time had come', 'It was finally time', 'Finally', 'In the end', 'After a while']
-genre = "science fiction"
+genre = "Realistic Fiction"
 grade = "5"
 max_tokens = 200
 
@@ -33,9 +36,16 @@ def run_model(responseprompt, max_tokens, vocab):
 
 def get_vocab(genre):
     vocab = {}
+    genre = genre.lower()
     filepath = 'data/genre_words/processed/'
     if genre == 'science fiction':
         filepath = filepath + 'sci-fi.json'
+    elif genre == "horror":
+        filepath = filepath + 'horror.json'
+    elif genre == "fantasy":
+        filepath = filepath + "fantasy.json"
+    elif genre == "realistic fiction":
+        filepath = filepath + "realfic.json"
 
     fileObject = open(filepath, "r")
     jsonContent = fileObject.read()
@@ -46,7 +56,7 @@ def get_vocab(genre):
 f = open(filepath, "a")
 for part in parts:
     #create starting prompt
-    startprompt = "Create the " + part + " of a " + genre + " story for Grade " + grade + " children. The story should talk about " + values + "."
+    startprompt = "Create the " + part + " of a " + genre + " story for grade " + grade + " children. The story should talk about " + values + "."
     if(part == "beginning"):
         story = starters[np.random.randint(0, len(starters))]
     responseprompt = startprompt + '\n' + story
