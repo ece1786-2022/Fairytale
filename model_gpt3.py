@@ -6,7 +6,7 @@ import json
 API_KEY = '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'
 orgID = "org-FamdhS456bzvQnGH0fUnw6aQ"
 URL = 'https://api.openai.com/v1/completions'
-filepath = "results/output_davinci003.txt"
+filepath = "results/davinci003_bias.txt"
 
 ai.organization = orgID
 ai.api_key = API_KEY
@@ -25,7 +25,10 @@ max_tokens = 200
 
 
 def run_model(responseprompt, max_tokens, vocab):
-    response = ai.Completion.create(model="text-davinci-003", prompt=responseprompt, temperature=0.7, top_p=1.0, max_tokens=max_tokens, logit_bias=vocab)
+    if vocab is not None:
+        response = ai.Completion.create(model="text-davinci-003", prompt=responseprompt, temperature=0.75, top_p=1.0, max_tokens=max_tokens, logit_bias=vocab)
+    else:
+        response = ai.Completion.create(model="text-davinci-003", prompt=responseprompt, temperature=0.75, top_p=1.0, max_tokens=max_tokens)
     return response['choices'][0]['text']
 
 def get_vocab(genre):
@@ -53,6 +56,7 @@ for part in parts:
 
     #get the vocab/bags of words
     vocab = get_vocab(genre)
+    # vocab = None
 
     #get the model output
     text = run_model(responseprompt, max_tokens, vocab)
@@ -75,3 +79,6 @@ for part in parts:
     f.write("----------------------------RESULT---------------------------------\n")
     f.write(story + '\n')
 f.close()
+
+#since limit of 300 logit biases need to convert terms like this:
+#Rewrite the above text, replacing science fiction terms with fantasy words.

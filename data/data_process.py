@@ -138,14 +138,16 @@ def create_json():
         for i, line in enumerate(lines):
             line = line.strip().split(',')
             for word in line:
-                output[tokenizer(word)['input_ids'][0]] = 1.5
+                for token in tokenizer(word)['input_ids']:
+                    output[token] = 1.5
+
     jsonString = json.dumps(output)
     jsonFile = open("genre_words/processed/sci-fi.json", "w")
     jsonFile.write(jsonString)
     jsonFile.close()
 
-create_json()
 # process_scifi()
+create_json()
 # process_summary()
 
 # process_childrenstories()
