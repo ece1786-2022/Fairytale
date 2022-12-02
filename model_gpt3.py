@@ -13,7 +13,7 @@ ai.api_key = API_KEY
 tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
 
 
-values = "friendship, determination"
+values = "friendship, honesty"
 story = ""
 parts = ['beginning', 'middle', 'end']
 
@@ -34,9 +34,15 @@ def run_model(responseprompt, max_tokens, vocab):
         response = ai.Completion.create(model="text-davinci-003", prompt=responseprompt, temperature=0.75, top_p=1.0, max_tokens=max_tokens)
     return response['choices'][0]['text']
 
-def get_vocab(genre):
-    vocab = {}
-    genre = genre.lower()
+
+def load_vocab(filepath):
+    fileObject = open(filepath, "r")
+    jsonContent = fileObject.read()
+
+    return json.loads(jsonContent)
+
+
+def get_genre_vocab(genre):
     filepath = 'data/genre_words/processed/'
     if genre == 'science fiction':
         filepath = filepath + 'sci-fi.json'
@@ -47,9 +53,40 @@ def get_vocab(genre):
     elif genre == "realistic fiction":
         filepath = filepath + "realfic.json"
 
-    fileObject = open(filepath, "r")
-    jsonContent = fileObject.read()
-    vocab = json.loads(jsonContent)
+    return load_vocab(filepath)
+
+
+def get_value_vocab(value):
+    filepath = 'data/genre_words/processed/'
+    if value == "love":
+        filepath = filepath + 'love.json'
+    elif value == "friendship":
+        filepath = filepath + 'friendship.json'
+    elif value == "determination":
+        filepath = filepath + 'determination.json'
+    elif value == "honesty":
+        filepath = filepath + 'honesty.json'
+
+    return load_vocab(filepath)
+
+
+#STILL NEED TO DO: need to implement random sampling if go past 300 vocab size
+def get_vocab(genre, value1, value2):
+    vocab0, vocab1, vocab2 = {}, {}, {}
+    genre = genre.lower()
+    value1 = value1.lower()
+    value2 = value2.lower()
+
+    #get genre vocab
+    vocab0 = get_genre_vocab(genre)
+    #get value #1 vocab 
+    if value1 != '':
+        vocab1 = get_value_vocab(value1)
+    #get value #2 vocab 
+    if value2 != '':
+        vocab2 = get_value_vocab(value2)
+
+    vocab = vocab0 | vocab1 | vocab2
     return vocab
 
 
@@ -65,7 +102,8 @@ for part in parts:
     f.write(responseprompt + '\n')
 
     #get the vocab/bags of words
-    vocab = get_vocab(genre)
+    value_list = values.strip().replace(' ', '').split(',')
+    vocab = get_vocab(genre, value_list[0], value_list[1])
     # vocab = None
 
     #get the model output
@@ -92,3 +130,6 @@ f.close()
 
 #since limit of 300 logit biases need to convert terms like this:
 #Rewrite the above text, replacing science fiction terms with fantasy words.
+
+#if more words --> could also include different tenses/conjugations of words
+#ex commitment --> commit, committed, commits, commitments, committing
