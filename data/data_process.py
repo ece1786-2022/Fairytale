@@ -130,7 +130,7 @@ def process_genre_words(genre):
     for each in output:
         s.write(each + ", ")
 
-def create_json(genre):
+def create_json(genre, bias):
     filename = "genre_words/processed/" + genre + ".txt"
     output = {}
     with open(filename, 'r', encoding='utf8') as f:
@@ -139,16 +139,24 @@ def create_json(genre):
             line = line.strip().split(',')
             for word in line:
                 for token in tokenizer(word)['input_ids']:
-                    output[token] = 1.35
+                    output[token] = bias
 
     jsonString = json.dumps(output)
     jsonFile = open("genre_words/processed/" + genre + ".json", "w")
     jsonFile.write(jsonString)
     jsonFile.close()
 
-genre_type = "grade6"
-process_genre_words(genre_type)
-create_json(genre_type)
+genre_list = ['sci-fi', 'horror', 'fantasy', 'realfic']
+value_list = ['determination', 'friendship', 'honesty', 'love']
+bias = 1.4
+for each in genre_list:
+    process_genre_words(each)
+    create_json(each, bias)
+
+bias = 1.15
+for each in value_list:
+    process_genre_words(each)
+    create_json(each, bias)
 # process_summary()
 
 # process_childrenstories()
