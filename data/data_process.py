@@ -146,7 +146,7 @@ def create_json(genre):
     jsonFile.write(jsonString)
     jsonFile.close()
 
-genre_type = "honesty"
+genre_type = "grade6"
 process_genre_words(genre_type)
 create_json(genre_type)
 # process_summary()

@@ -131,5 +131,12 @@ f.close()
 #since limit of 300 logit biases need to convert terms like this:
 #Rewrite the above text, replacing science fiction terms with fantasy words.
 
+#couple of ways to approach age issue
+#could just brute force it by collecting massive collection of commonly used words by the grade group
+#could also do a selective choice of words --> ie if the genre is sci-fi and the age group is grade 5,
+#we choose the most commonly used sci-fi words in grade 5 books --> this requires a lot of searching + data processing
+#could also try to have the LM learn this intrinsically by feeling it more children's stories that are fully labelled
+#--> this also requires a lot of searching + data processing
+
 #if more words --> could also include different tenses/conjugations of words
 #ex commitment --> commit, committed, commits, commitments, committing
