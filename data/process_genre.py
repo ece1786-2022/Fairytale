@@ -5,8 +5,7 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 def get_genre(text = ''):    
     tokenizer = AutoTokenizer.from_pretrained("Tejas3/distillbert_110_uncased_movie_genre")    
     model = AutoModelForSequenceClassification.from_pretrained("Tejas3/distillbert_110_uncased_movie_genre")
-    inputs  = tokenizer(text, return_tensors="pt")
-    
+    inputs  = tokenizer(text, return_tensors="pt",truncation=True, max_length=512)
     with torch.no_grad():
         logits = model(**inputs).logits
     predicted_class_id = logits.argmax().item()
