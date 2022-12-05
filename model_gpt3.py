@@ -3,24 +3,22 @@ import openai as ai
 import numpy as np
 from numpy import random
 import json
+import sys
 
 API_KEY = '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'
 orgID = "org-FamdhS456bzvQnGH0fUnw6aQ"
 URL = 'https://api.openai.com/v1/completions'
-filepath = "results/davinci003_bias.txt"
+filepath = "results/davinci003_evalstories.txt"
 
 ai.organization = orgID
 ai.api_key = API_KEY
 tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
 
-
-values = "love, determination"
-genre = "fantasy"
-grade = "1"
-max_tokens = 50
+maxtokenlist = [100, 120, 140, 200, 300, 500]
+maxwordlength = ['6', '7', '8', '9', '10', 'no limit']
+maxsentencelength = ['7', '9', '11', '13', '15', 'no limit']
 
 story = ""
-# parts = ['beginning', 'middle', 'end']
 parts = ['beginning']
 
 scifi_starters = ['In', 'Before', 'Deep in space', 'Somewhere in a galaxy far, far away', 'Out in space', 'Out of nowhere', 'There was a', 'After years of' , 'In the skies', 'A smart', 'The machines', 'The aliens', 'One day', 'Eureka!']
@@ -28,9 +26,9 @@ horror_starters = ['In', 'Before', 'Two dark figures', 'He was being chased', 'S
 fantasy_starters = ['In', 'Before', 'A long time ago and far,', 'Once upon a time,', 'There is a', 'In a faraway land', 'There was once a', 'Two figures stood', 'Across the seas', 'For many years', 'In a kingdom', 'King', 'Queen', 'In a tower', 'In a castle']
 realfic_starters = ['In', 'Before', 'There is a', 'I knew that something very special was about to happen', 'Today', 'Dear Diary', 'On a', 'It was a', 'Somewhere in', 'One sunny morning', 'One hot afternoon', 'Today was', 'Today will']
 
-fillers = ['In', 'The', 'One day', 'Later', "But", "After a while,", "However,", "Then,", "So,", "In fact,", "Moreover", "After", 'Soon', 'Meanwhile', 'While', 'At the same time', 'Eventually', "A"]
+fillers = ['The', "A"]
+# fillers = ['In', 'The', 'Later', "But", "However,", "Then,", "So,", "In fact,", "Moreover", "After", 'Soon', 'Meanwhile', 'While', 'At the same time', 'Eventually', "A"]
 closers = ['The time had come', 'It was finally time', 'Finally', 'In the end', 'After a while', 'And with that', 'They day was', 'Finally,', 'And with that', 'So with that', 'Thus']
-
 
 def run_model(responseprompt, max_tokens, vocab, temp=0.8):
     if vocab is not None:
@@ -84,11 +82,15 @@ def rand_selection(vocab):
     return newvocab
 
 
-def get_vocab(genre, value1, value2):
+def get_vocab(genre, value1, value2=None):
     vocab0, vocab1, vocab2 = {}, {}, {}
     genre = genre.lower()
     value1 = value1.lower()
-    value2 = value2.lower()
+    
+    if value2 is not None:
+        value2 = value2.lower()
+    else:
+        value2 = ''
 
     #get genre vocab
     vocab0 = get_genre_vocab(genre)
@@ -116,98 +118,147 @@ def get_starter(genre):
         return realfic_starters
 
 
-f = open(filepath, "a")
-for part in parts:
-    #create starting prompt
+def age_restriction(age, prompt):
+    wordlength = maxwordlength[int(age)-1]
+    sentencelength = maxsentencelength[int(age)-1]
+
+    if wordlength != "no limit":
+        prompt = prompt + " The word length of most words should be no longer than " + wordlength + " characters."
+    if sentencelength != "no limit":
+        prompt = prompt + " Most sentences should be no longer than " + sentencelength + " words long."
+    prompt = prompt + " Do not end the story."
+
+    return prompt
+
+#===================================Start============================================
+def main():
+    
+    #set values, genre, grade from user args
+    genre = str(sys.argv[1])
+    grade = str(sys.argv[2])
+    v1 = str(sys.argv[3])
+    v2 = str(sys.argv[4])
+
+    values = v1
+    if v2 != 'none':
+        values = values + ', ' + v2
+
+    if genre == "scifi":
+        genre = "science fiction"
+    if genre == "realfic":
+        genre = "realistic fiction"
+
+    max_token_amt = maxtokenlist[int(grade)-1]
+    max_tokens = max_token_amt
+    
+    f = open(filepath, "a")
+
+    #creating starter prompt
+    part = parts[0]
     starters = get_starter(genre)
-    startprompt = "Create the " + part + " of a " + genre + " story for grade " + grade + " children. The story should talk about " + values + ". The word length of most words should be no longer than 6 characters. Most sentences should be no longer than 7 words long. Do not end the story."
+
+    #getting the max word length and max sentence length
+    wordlength = maxwordlength[int(grade)-1]
+    sentencelength = maxsentencelength[int(grade)-1]
+
+    #get the values and vocab for each value
+    value_list = values.strip().replace(' ', '').split(',')
+    value_sentence = values
+    vocab = {}
+    if len(value_list) > 1:
+        value_sentence = value_list[0] + ", and " + value_list[1]
+
+    if len(value_list) > 1:
+        vocab = get_vocab(genre, value_list[0], value_list[1])
+    else:
+        vocab = get_vocab(genre, value_list[0])
+
+    #put all the parts together to make starterprompt
+    startprompt = "Create the " + part + " of a " + genre + " story for grade " + grade + " children. The story should talk about " + value_sentence + "." 
+    startprompt = age_restriction(grade, startprompt)
+
     if(part == "beginning"):
         story = starters[np.random.randint(0, len(starters))]
     responseprompt = startprompt + '\n' + story
+    print("STARTING PROMPT: " + responseprompt)
 
     f.write("============================PROMPT=================================\n")
     f.write(responseprompt + '\n')
-
-    #get the vocab/bags of words
-    value_list = values.strip().replace(' ', '').split(',')
-    vocab = get_vocab(genre, value_list[0], value_list[1])
-    # vocab = None
 
     #get the model output
     text = run_model(responseprompt, max_tokens, vocab)
-    max_tokens = len(tokenizer(text)['input_ids']) + 200
-    
-    f.write("............................RETURNED.................................\n")
-    f.write(text + '\n')
-
-    #if the story has not changed, retry with a filler
     story = story + text
-    # if(story == text or text.replace('\n', '') == ''):
-    #     if(part == "middle"):
-    #         story = story + text + fillers[np.random.randint(0, len(fillers))]
-    #         responseprompt = startprompt + '\n' + story
+    max_tokens = len(tokenizer(responseprompt + story)['input_ids']) + max_token_amt
 
-    #         text = run_model(responseprompt, max_tokens, vocab)
-    #         max_tokens = len(tokenizer(text)['input_ids']) + 200
-    #         story = story + text
+    # f.write("............................RETURNED.................................\n")
+    # f.write(text + '\n')
+    # f.write("----------------------------RESULT---------------------------------\n")
+    # f.write(story + '\n')
 
-    f.write("----------------------------RESULT---------------------------------\n")
-    f.write(story + '\n')
 
-for i in range(10):
-    continueprompt = "Write the next sentence of the following " + genre + " story for grade " + grade + " children. The story should talk about " + values + ". The word length of most words should be no longer than 6 characters. Most sentences should be no longer than 7 words long. Do not end the story."
-    responseprompt = continueprompt + '\n' + story
-    
-    f.write("============================PROMPT=================================\n")
-    f.write(responseprompt + '\n')
+    #middle of the story --> write sentence by sentence
+    print("WRITING MIDDLE OF STORY")
+    for i in range(10):
+        continueprompt = "Write the next sentence of the following " + genre + " story for grade " + grade + " children. The story should talk about " + value_sentence + "."
+        continueprompt = age_restriction(grade, continueprompt)
+        continueprompt = continueprompt + '\n' + story
+        
+        # f.write("============================PROMPT=================================\n")
+        # f.write(responseprompt + '\n')
 
-    value_list = values.strip().replace(' ', '').split(',')
-    vocab = get_vocab(genre, value_list[0], value_list[1])
+        text = run_model(continueprompt, max_tokens, vocab)
+        story = story + text
+        max_tokens = len(tokenizer(continueprompt + story)['input_ids']) + max_token_amt
+
+        #if we don't get anything from the model --> run again but force it to add a new word with temp = 1.0
+        if(text == '' or text == "\n"):
+            fillprompt = "Write the next word to the following story.\n" + story
+            max_tokens = len(tokenizer(story)['input_ids']) + 50
+            next_word = run_model(fillprompt, max_tokens, vocab=vocab, temp=1.0)
+            
+            if next_word == '' or next_word == '\n':
+                next_word = fillers[np.random.randint(len(fillers))]
+
+            fillprompt = "Finish the sentence of the following "  + genre + " story for grade " + grade + " children. The story should talk about " + value_sentence + "."
+            fillprompt = age_restriction(grade, fillprompt)
+            fillprompt = fillprompt + '\n' + story + ' ' + next_word
+            
+            # f.write("----------------------------ADDED FILLER---------------------------------\n")
+            # f.write(fillprompt + '\n')
+
+            max_tokens = len(tokenizer(fillprompt)['input_ids']) + max_token_amt
+            text = run_model(fillprompt, max_tokens, vocab)
+            story = story + ' ' + next_word + text
+
+        # f.write("............................RETURNED.................................\n")
+        # f.write(text + '\n')
+        # f.write("----------------------------RESULT---------------------------------\n")
+        # f.write(story + '\n')
+
+
+    #end of the story
+    print("WRITING END OF STORY")
+
+    endprompt = "Write the ending of the following " + genre + " story for grade " + grade + " children. The story should talk about " + value_sentence + "."
+    endprompt = age_restriction(grade, endprompt)
+    responseprompt = endprompt + story
+
+    # f.write("============================PROMPT=================================\n")
+    # f.write(responseprompt + '\n')
 
     text = run_model(responseprompt, max_tokens, vocab)
-    max_tokens = len(tokenizer(text)['input_ids']) + 200
     story = story + text
 
-    f.write("............................RETURNED.................................\n")
-    f.write(text + '\n')
+    # f.write("............................RETURNED.................................\n")
+    # f.write(text + '\n')
 
     f.write("----------------------------RESULT---------------------------------\n")
-    f.write(story + '\n')
+    f.write(story + '\n\n')
 
-    if(text == '' or text == "\n"):
-        responseprompt = "Give me the next word to the following story. Do not end the story.\n" + story
-        next_word = run_model(responseprompt, max_tokens=max_tokens + 10, vocab=vocab, temp=1.0)
-        
-        responseprompt = "Finish the sentence of the following "  + genre + " story for grade " + grade + " children. The story should talk about " + values + ". The word length of most words should be no longer than 6 characters. Most sentences should be no longer than 7 words long. Do not end the story."
-        responseprompt = responseprompt + '\n' + story + ' ' + next_word
-        
-        f.write("----------------------------ADDED FILLER---------------------------------\n")
-        f.write(responseprompt + '\n')
+    f.close()
 
-        text = run_model(responseprompt, max_tokens, vocab)
-        max_tokens = len(tokenizer(text)['input_ids']) + 200
-        story = story + text
-
-endprompt = "Write the end sentence of the following " + genre + " story for grade " + grade + " children. The story should talk about " + values + ". The word length of most words should be no longer than 6 characters. Most sentences should be no longer than 7 words long."
-responseprompt = endprompt + story
-
-f.write("============================PROMPT=================================\n")
-f.write(responseprompt + '\n')
-
-value_list = values.strip().replace(' ', '').split(',')
-vocab = get_vocab(genre, value_list[0], value_list[1])
-
-text = run_model(responseprompt, max_tokens, vocab)
-max_tokens = len(tokenizer(text)['input_ids']) + 200
-story = story + text
-
-f.write("............................RETURNED.................................\n")
-f.write(text + '\n')
-
-f.write("----------------------------RESULT---------------------------------\n")
-f.write(story + '\n')
-
-f.close()
+if __name__ == "__main__":
+    main()
 
 #since limit of 300 logit biases need to convert terms like this:
 #Rewrite the above text, replacing science fiction terms with fantasy words.
