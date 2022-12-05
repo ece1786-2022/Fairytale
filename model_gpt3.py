@@ -157,10 +157,6 @@ def main():
     part = parts[0]
     starters = get_starter(genre)
 
-    #getting the max word length and max sentence length
-    wordlength = maxwordlength[int(grade)-1]
-    sentencelength = maxsentencelength[int(grade)-1]
-
     #get the values and vocab for each value
     value_list = values.strip().replace(' ', '').split(',')
     value_sentence = values
