@@ -1,5 +1,7 @@
 # Fairytale
 
+Alan Du, Navid Hasanzadeh
+
 ## Introduction
 
 Children’s tales are extremely important in child development as they improve literacy skills, communication skills, and assist with forming ideas of culture/race. Each story contains lessons that highlight important societal values and show children what is right and wrong. 
