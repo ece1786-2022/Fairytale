@@ -176,3 +176,43 @@ They soon came across a giant chasm that blocked their path. Hal and Jo looked a
  
 Endless. That is what the adventure had in store for Hal and Jo. With honesty and friendship, they would explore and discover the secrets of the kingdom. With each step, they moved closer to the unknown, ready to take on whatever came their way. A magical journey of adventure, friendship and honesty had just begun� The friends held hands, and bravely stepped forward, into the unknown. The adventure was about to begin!
 
+============================PROMPT=================================
+Create the beginning of a realistic fiction story for grade 1 children. The story should talk about friendship. The word length of most words should be no longer than 6 characters. Most sentences should be no longer than 7 words long. Do not end the story.
+It was a
+============================PROMPT=================================
+Create the beginning of a realistic fiction story for grade 1 children. The story should talk about friendship. The word length of most words should be no longer than 6 characters. Most sentences should be no longer than 7 words long. Do not end the story.
+Dear Diary
+----------------------------RESULT---------------------------------
+Dear Diary,
+Tod was a boy with no frnds. He felt so lon. 
+He saw a girl in his clas. Her name was Lila. 
+Tod sta'd to tal to her. They laug'd and pla'd. 
+Tod and Lila becam best frnds. 
+Tod smil'd every day. He was so hap! 
+He told Lila all his secrets. 
+Lila alway listnd and car'd. 
+
+They promisd to be frnds forevr. 
+Tod knew he had a real frnd now. 
+He hop'd they would nev'r be apart. A frnd like Lila was hard to find.  
+With her help, Tod felt like he could take on the world. 
+
+Everywhere Tod went, Lila followed. 
+They raced, they jump'd and they clim'd. 
+Tod was so lucky to have a frnd like Lila. 
+Together they shared all their hopes and dreams. 
+They encourg'd each other and nev'r gave up. 
+Their friendship was strong and true. 
+Tod and Lila were insep'rable! The bond they shared was unbreak'ble. 
+Tod knew he found a true frnd in Lila and they would be frnds forever. A true frienship like theirs was hard to find. 
+But Tod and Lila knew they had something special. 
+They were the best of friends.  
+And no matter what, that would never change. 
+ 
+No matter how far apart they were, Tod and Lila shared a bond of frindship that could never be broken. 
+They were connected by something more special than words could ever explain. 
+They were true friends and nothing could ever come between them.
+
+============================PROMPT=================================
+Create the beginning of a realistic fiction story for grade 2 children. The story should talk about friendship. The word length of most words should be no longer than 7 characters. Most sentences should be no longer than 9 words long. Do not end the story.
+Before

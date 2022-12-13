@@ -4,9 +4,10 @@ import numpy as np
 from numpy import random
 import json
 import sys
+from data import process_age
 
-API_KEY = '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'
-orgID = "org-FamdhS456bzvQnGH0fUnw6aQ"
+API_KEY = #please put your OpenAI API_KEY
+orgID = #please put your OpenAI orgID
 URL = 'https://api.openai.com/v1/completions'
 filepath = "results/davinci003_evalstories.txt"
 
@@ -251,6 +252,8 @@ def main():
     f.write("----------------------------RESULT---------------------------------\n")
     f.write(story + '\n\n')
 
+    print("Given Grade: ", grade, " Calculated Grade: ", process_age.calculate_grade(story))
+
     f.close()
 
 if __name__ == "__main__":
@@ -260,10 +263,10 @@ if __name__ == "__main__":
 #Rewrite the above text, replacing science fiction terms with fantasy words.
 
 #couple of ways to approach age issue
-#could just brute force it by collecting massive collection of commonly used words by the grade group
+#could just brut force it by collecting massive collection of commonly used words by the grade group
 #could also do a selective choice of words --> ie if the genre is sci-fi and the age group is grade 5,
 #we choose the most commonly used sci-fi words in grade 5 books --> this requires a lot of searching + data processing
-#could also try to have the LM learn this intrinsically by feeling it more children's stories that are fully labelled
+#could also try to have the LM learn thies intrinsically by feeling it more children's stories that are fully labelled
 #--> this also requires a lot of searching + data processing
 
 #if more words --> could also include different tenses/conjugations of words

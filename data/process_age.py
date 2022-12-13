@@ -92,7 +92,7 @@ def is_for_kids(text='', levels_address = 'english_level/processed_words_level/'
     return 1
 
 
-# text = "The aliens landed. The kids ran. But one stayed. Jed's courage shone. He said, 'Friends, help me. We must fight this!' His pals cheered. They knew Jed would never quit."
+# text = "In the small town of Riverwood, two best friends, Sam and Jake, were exploring the forest near their homes. Suddenly, they heard an eerie laugh echoing through the trees. Sam and Jake were scared, but they wanted to be brave and find out what was happening. They crept closer, following the strange laughter until they reached a clearing. In the clearing, they saw a mysterious figure with bright yellow eyes staring right at them. "
 
 # text2 = "Dear Diary, Today was the best and worst day of my life. I can’t believe I finally worked up the courage to talk to my crush, Ryan. He’s been my secret crush ever since I moved here, but I’m too shy to talk to him.  When I finally got the nerve to talk to him, he acted like he didn’t even know I existed. I was so embarrassed and my heart sank. I turned to walk away, but then my best friend, Sarah, came and stood up for me. She is the bravest person I know and I admire her so much.  Sarah put her arm around me and told Ryan that she was my best friend and that I deserved to be treated with respect. Her words hit home and Ryan apologized. He even asked to be friends.  I was so relieved and so grateful for Sarah. She is always there for me and I know she will always have my back.  I'm determined to be brave like Sarah and to make Ryan my true friend. I know it won’t be easy, but with Sarah’s help, I know I can do it.  That’s all for today.  Good night!  - Ashley"
 
